@@ -13,6 +13,8 @@ type Triangle struct {
 }
 
 // BVHNode represents a node in the Bounding Volume Hierarchy.
+// The BVH reduces the number of triangle intersection tests by hierarchically
+// organizing the mesh into bounding volumes.
 type BVHNode struct {
 	Bounds    AABB
 	Left      *BVHNode
@@ -82,6 +84,8 @@ func (m *MeshCollider) IntersectAABB(aabb AABB) bool {
 }
 
 // buildBVH recursively builds the BVH for the given triangles.
+// This process splits the triangles along the largest axis to create a balanced tree,
+// minimizing the number of intersection tests during queries.
 func buildBVH(triangles []Triangle, start, end int) *BVHNode {
 	if start >= end {
 		return nil
@@ -116,6 +120,8 @@ func buildBVH(triangles []Triangle, start, end int) *BVHNode {
 }
 
 // intersectRayBVH performs a raycast against the BVH.
+// By pruning branches that do not intersect the ray, this method avoids testing
+// all triangles in the mesh, significantly improving performance.
 func intersectRayBVH(ray Ray, node *BVHNode, triangles []Triangle) (bool, float32) {
 	if node == nil {
 		return false, 0
@@ -151,6 +157,7 @@ func intersectRayBVH(ray Ray, node *BVHNode, triangles []Triangle) (bool, float3
 }
 
 // intersectAABBBVH checks if an AABB intersects the BVH.
+// This method leverages the hierarchical structure to quickly eliminate non-overlapping branches.
 func intersectAABBBVH(aabb AABB, node *BVHNode) bool {
 	if node == nil {
 		return false

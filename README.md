@@ -90,6 +90,19 @@ results := scene.PointContainmentQuery(point, 1)
 fmt.Printf("Found %d nodes containing the point\n", len(results))
 ```
 
+## Optimizations
+
+`ns-physics` includes several optimizations to ensure high performance in real-time applications:
+
+- **Bounding Volume Hierarchy (BVH)**: The BVH is used to accelerate collision detection by hierarchically organizing colliders. This reduces the number of intersection tests required, especially for complex meshes or large scenes.
+- **Dynamic AABB Tree**: A dynamic AABB tree is used for broadphase collision detection. It efficiently handles dynamic objects by incrementally updating the tree structure.
+- **RaycastAny**: The `RaycastAny` method provides a fast way to determine if a ray intersects any object in the scene without guaranteeing the closest hit. This is useful for early exits in scenarios like visibility checks.
+- **Layer Mask Filtering**: Layer masks allow filtering of objects during queries, reducing unnecessary computations by excluding irrelevant objects.
+- **Transform Caching**: Transformed collider bounds are cached to avoid redundant computations during queries.
+- **Efficient AABB Merging**: AABBs are merged efficiently during tree updates and queries to minimize overhead.
+
+These optimizations make `ns-physics` suitable for large-scale simulations and real-time applications where performance is critical.
+
 ## Benchmarks
 
 Run the included benchmarks to test the performance of the library:

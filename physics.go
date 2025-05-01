@@ -303,6 +303,8 @@ type DynamicAABBTreeNode struct {
 }
 
 // DynamicAABBTree represents the broadphase acceleration structure.
+// The tree dynamically adjusts to changes in the scene, ensuring efficient queries
+// even for dynamic objects.
 type DynamicAABBTree struct {
 	Root *DynamicAABBTreeNode
 }
@@ -380,6 +382,7 @@ func insertNode(root, newNode *DynamicAABBTreeNode) *DynamicAABBTreeNode {
 }
 
 // UpdateTree incrementally updates the tree structure to reflect changes in node positions.
+// This avoids rebuilding the entire tree, making it suitable for real-time applications.
 func (tree *DynamicAABBTree) UpdateTree() {
 	var updatedNodes []*SceneNode
 	collectUpdatedNodes(tree.Root, &updatedNodes)
@@ -429,6 +432,7 @@ func queryNode(node *DynamicAABBTreeNode, aabb AABB, mask uint32, results *[]*Sc
 }
 
 // Raycast performs a broadphase raycast query on the tree with a maximum ray length.
+// By pruning branches that do not intersect the ray, this method reduces the number of narrowphase tests.
 func (tree *DynamicAABBTree) Raycast(ray Ray, mask uint32) []*SceneNode {
 	var results []*SceneNode
 	raycastNode(tree.Root, ray, mask, &results)
@@ -521,6 +525,7 @@ func (s *Scene) Raycast(ray Ray, mask uint32) *RaycastResult {
 }
 
 // RaycastAny performs a raycast against the scene and returns any hit, without guaranteeing the closest.
+// This method is optimized for scenarios where the first hit is sufficient, such as visibility checks.
 func (s *Scene) RaycastAny(ray Ray, mask uint32) *RaycastResult {
 	candidates := s.Tree.Raycast(ray, mask)
 	for _, node := range candidates {
