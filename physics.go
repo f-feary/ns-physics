@@ -300,7 +300,6 @@ type DynamicAABBTreeNode struct {
 	Left   *DynamicAABBTreeNode
 	Right  *DynamicAABBTreeNode
 	IsLeaf bool
-	Parent *DynamicAABBTreeNode
 }
 
 // DynamicAABBTree represents the broadphase acceleration structure.
@@ -365,8 +364,6 @@ func insertNode(root, newNode *DynamicAABBTreeNode) *DynamicAABBTreeNode {
 			Right:  newNode,
 			IsLeaf: false,
 		}
-		root.Parent = parent
-		newNode.Parent = parent
 		return parent
 	}
 	leftMerged := mergeAABB(root.Left.Bounds, newNode.Bounds)
@@ -499,8 +496,7 @@ func max(a, b float32) float32 {
 
 // Scene represents the collection of objects and the acceleration structure.
 type Scene struct {
-	Nodes []SceneNode
-	Tree  DynamicAABBTree
+	Tree DynamicAABBTree
 }
 
 // RaycastResult represents the result of a raycast query.
