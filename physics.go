@@ -32,16 +32,15 @@ type Collider interface {
 // BoxCollider is a concrete implementation of Collider for a transformable 3D cube.
 type BoxCollider struct {
 	LocalBounds    AABB        // Local-space AABB
-	LocalTransform mgl32.Mat4  // Local transform relative to the SceneNode
 	WorldTransform *mgl32.Mat4 // Pointer to the SceneNode's world transform
 }
 
 // GetAABB computes and returns the world-space AABB of the BoxCollider.
 func (b *BoxCollider) GetAABB() AABB {
-	// Combine the local transform with the world transform
-	finalTransform := b.LocalTransform
+	// Use only the world transform to compute the final transform
+	finalTransform := mgl32.Ident4()
 	if b.WorldTransform != nil {
-		finalTransform = b.WorldTransform.Mul4(b.LocalTransform)
+		finalTransform = *b.WorldTransform
 	}
 
 	// Extract the 8 corners of the local AABB
@@ -218,10 +217,9 @@ func NewSceneNode(layerMask uint32) *SceneNode {
 }
 
 // AddBoxCollider adds a BoxCollider to the SceneNode and updates its AABB.
-func (node *SceneNode) AddBoxCollider(localBounds AABB, localTransform mgl32.Mat4) {
+func (node *SceneNode) AddBoxCollider(localBounds AABB) {
 	boxCollider := &BoxCollider{
 		LocalBounds:    localBounds,
-		LocalTransform: localTransform,
 		WorldTransform: &node.Transform,
 	}
 	node.Colliders = append(node.Colliders, boxCollider)

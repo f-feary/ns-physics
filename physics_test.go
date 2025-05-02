@@ -16,7 +16,6 @@ func TestRaycastClosestHit(t *testing.T) {
 	boxNode := NewSceneNode(1)
 	boxNode.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(boxNode)
 
@@ -53,7 +52,6 @@ func TestRaycastAnyHit(t *testing.T) {
 	boxNode := NewSceneNode(1)
 	boxNode.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(boxNode)
 
@@ -77,7 +75,6 @@ func TestOverlapQuery(t *testing.T) {
 	boxNode := NewSceneNode(1)
 	boxNode.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(boxNode)
 
@@ -126,7 +123,6 @@ func TestBoxColliderTransform(t *testing.T) {
 	boxNode.Transform = mgl32.Translate3D(5, 0, 0) // Translate the box by (5, 0, 0)
 	boxNode.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(boxNode)
 
@@ -188,7 +184,6 @@ func TestNoOverlapQuery(t *testing.T) {
 	boxNode := NewSceneNode(1)
 	boxNode.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{100, 100, 100}, Max: mgl32.Vec3{110, 110, 110}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(boxNode)
 
@@ -228,7 +223,6 @@ func TestNoRaycastHit(t *testing.T) {
 	boxNode := NewSceneNode(1)
 	boxNode.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{100, 100, 100}, Max: mgl32.Vec3{110, 110, 110}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(boxNode)
 
@@ -255,7 +249,6 @@ func setupRaycastAny(scene *Scene, numColliders int) {
 		)
 		boxNode.AddBoxCollider(
 			AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-			mgl32.Ident4(),
 		)
 		scene.Tree.Insert(boxNode)
 	}
@@ -333,7 +326,6 @@ func BenchmarkUpdateSingleNodeInScene10000(b *testing.B) {
 	dynamicNode := NewSceneNode(1)
 	dynamicNode.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(dynamicNode)
 
@@ -373,7 +365,7 @@ func TestIntersectAABBOnBoxCollider(t *testing.T) {
 			Min: mgl32.Vec3{-1, -1, -1},
 			Max: mgl32.Vec3{1, 1, 1},
 		},
-		LocalTransform: mgl32.Ident4(),
+		WorldTransform: nil,
 	}
 	aabb := AABB{
 		Min: mgl32.Vec3{-0.5, -0.5, -0.5},
@@ -388,7 +380,6 @@ func TestSceneNodeWithMultipleColliders(t *testing.T) {
 	node := NewSceneNode(1)
 	node.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	node.AddSphereCollider(mgl32.Vec3{5, 0, 0}, 1)
 
@@ -408,7 +399,6 @@ func TestRemoveNode(t *testing.T) {
 	node1 := NewSceneNode(1)
 	node1.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(node1)
 
@@ -443,7 +433,6 @@ func TestUpdateTree(t *testing.T) {
 	node := NewSceneNode(1)
 	node.AddBoxCollider(
 		AABB{Min: mgl32.Vec3{-1, -1, -1}, Max: mgl32.Vec3{1, 1, 1}},
-		mgl32.Ident4(),
 	)
 	scene.Tree.Insert(node)
 
