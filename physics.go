@@ -216,6 +216,13 @@ func NewSceneNode(layerMask uint32) *SceneNode {
 	}
 }
 
+// AddMeshCollider adds a MeshCollider to the SceneNode and updates its AABB.
+func (node *SceneNode) AddMeshCollider(triangles []Triangle) {
+	meshCollider := NewMeshCollider(triangles, &node.Transform)
+	node.Colliders = append(node.Colliders, meshCollider)
+	node.UpdateBounds()
+}
+
 // AddBoxCollider adds a BoxCollider to the SceneNode and updates its AABB.
 func (node *SceneNode) AddBoxCollider(localBounds AABB) {
 	boxCollider := &BoxCollider{
